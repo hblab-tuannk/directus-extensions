@@ -1,0 +1,19 @@
+{
+	"name": "directus-extension-filter-expired-posts-bundle",
+	"version": "1.0.0",
+	"keywords": [
+		"directus",
+		"directus-extension",
+		"directus-hook",
+		"filter",
+		"expired",
+		"display-end-date"
+	],
+	"directus:extension": {
+		"type": "hook",
+		"path": "filter-expired-posts/dist/index.js",
+		"source": "filter-expired-posts/src/index.ts",
+		"host": "^10.1.0 || ^11.0.0"
+	}
+}
+

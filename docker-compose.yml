@@ -1,0 +1,20 @@
+services:
+  directus:
+    image: directus/directus:11.5.1
+    container_name: directus
+    ports:
+      - "8055:8055"
+    volumes:
+      - ./database:/directus/database
+      - ./uploads:/directus/uploads
+      - ./extensions:/directus/extensions
+    environment:
+      DB_CLIENT: "sqlite3"
+      DB_FILENAME: "/directus/database/data.db"
+      WEBSOCKETS_ENABLED: "true"
+      ADMIN_EMAIL: "tuannk@hblab.vn"
+      ADMIN_PASSWORD: "admin_test"
+      KEY: "your-secret-key-change-this-in-production"
+      SECRET: "your-secret-change-this-in-production"
+      CORS_ENABLED: "true"
+    restart: unless-stopped

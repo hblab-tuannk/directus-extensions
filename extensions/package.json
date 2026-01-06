@@ -1,0 +1,21 @@
+{
+	"name": "directus-custom-bundle",
+	"version": "1.0.0",
+	"directus:extension": {
+		"type": "bundle",
+		"entries": [
+			{
+				"type": "interface",
+				"path": "interfaces/display-end-date/dist/index.js",
+				"source": "interfaces/display-end-date/src/index.ts"
+			},
+			{
+				"type": "hook",
+				"path": "hooks/filter-expired-posts/dist/index.js",
+				"source": "hooks/filter-expired-posts/src/index.ts"
+			}
+		],
+		"host": "^10.1.0 || ^11.0.0"
+	}
+}
+

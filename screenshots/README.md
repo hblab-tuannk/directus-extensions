@@ -17,3 +17,4 @@ Place your screenshots in this folder and reference them in the main README.md.
 5. Save as PNG or JPG format
 6. Name files descriptively (e.g., `display-end-date-interface.png`)
 
+
