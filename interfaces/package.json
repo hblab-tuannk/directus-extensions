@@ -1,10 +1,13 @@
 {
-	"name": "directus-extension-slug-generator",
+	"name": "directus-extension-display-end-date",
 	"version": "1.0.0",
 	"keywords": [
 		"directus",
 		"directus-extension",
-		"directus-custom-interface"
+		"directus-custom-interface",
+		"datetime",
+		"date-picker",
+		"display-end-date"
 	],
 	"directus:extension": {
 		"type": "interface",
