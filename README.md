@@ -1,10 +1,10 @@
-# Directus Extensions: Display End Date & Filter Expired Posts
+# Directus Extensions: Display End Date
 
 This repository contains two complementary Directus extensions that work together to manage time-sensitive content: a **Display End Date Interface** that provides a date picker (time optional) for setting when content should expire, and a **Filter Expired Posts Hook** that automatically changes expired published items to draft and excludes them from responses.
 
 ## Why It's Useful
 
-Managing time-sensitive content like blog posts, news articles, promotional campaigns, or event listings requires controlling when content should stop being displayed. Manually tracking expiration dates and adding filters to every API query is time-consuming and error-prone. These extensions solve this problem by providing a complete solution: the interface extension allows content creators to easily set expiration dates with visual feedback, while the hook extension automatically handles filtering at the API level, ensuring expired content never appears in your applications without requiring any changes to your frontend code or API queries.
+Managing time-sensitive content like blog posts, news articles, promotional campaigns, or event listings requires controlling when content should stop being displayed. Manually tracking expiration dates and updating item statuses is time-consuming and error-prone. These extensions solve this problem by providing a complete solution: the interface extension allows content creators to easily set expiration dates with visual feedback, while the hook extension automatically changes expired published items to draft in the database, so you can rely on the status field in your own queries and business logic.
 
 ## How to Install/Use It
 
