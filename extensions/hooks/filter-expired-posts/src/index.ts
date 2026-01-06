@@ -2,8 +2,6 @@ import { defineHook } from '@directus/extensions-sdk';
 import type { Item } from '@directus/types';
 
 export default defineHook(({ action }, { getSchema, services, logger }) => {
-	logger?.info('[filter-expired-posts] Hook registered successfully');
-	console.log('[filter-expired-posts] Hook registered successfully');
 
 	action('items.read', async ({ payload, collection, key }, { schema }) => {
 		try {
@@ -44,7 +42,6 @@ export default defineHook(({ action }, { getSchema, services, logger }) => {
 						itemsToCheck = [item];
 					}
 				} catch (error) {
-					logger?.warn(`[filter-expired-posts] Error reading item ${key}: ${error}`);
 					return;
 				}
 			} else {
@@ -59,7 +56,6 @@ export default defineHook(({ action }, { getSchema, services, logger }) => {
 						limit: -1
 					})) as Item[];
 				} catch (error) {
-					logger?.warn(`[filter-expired-posts] Error reading items: ${error}`);
 					return;
 				}
 			}
@@ -82,7 +78,6 @@ export default defineHook(({ action }, { getSchema, services, logger }) => {
 					const endDateObj = new Date(endDate);
 
 					if (isNaN(endDateObj.getTime())) {
-						logger?.warn(`[filter-expired-posts] Invalid date for item ${item.id}: ${endDate}`);
 						continue;
 					}
 
@@ -102,13 +97,11 @@ export default defineHook(({ action }, { getSchema, services, logger }) => {
 					} else {
 						const endDateStr = endDateOnly.toISOString().split('T')[0];
 						const todayStr = today.toISOString().split('T')[0];
-						logger?.debug(`[filter-expired-posts] Item ${item.id} not expired yet (${endDateStr} >= ${todayStr})`);
 					}
 				} catch (error) {
 				}
 			}
 		} catch (error) {
-			logger?.error(`[filter-expired-posts] Error in action hook: ${error}`);
 		}
 	});
 });

@@ -1,6 +1,6 @@
 # Directus Extensions: Display End Date & Filter Expired Posts
 
-This repository contains two complementary Directus extensions that work together to manage time-sensitive content: a **Display End Date Interface** that provides a date/time picker for setting when content should expire, and a **Filter Expired Posts Hook** that automatically filters out expired content from API queries, ensuring that posts with end dates in the past are never returned to frontend applications.
+This repository contains two complementary Directus extensions that work together to manage time-sensitive content: a **Display End Date Interface** that provides a date picker (time optional) for setting when content should expire, and a **Filter Expired Posts Hook** that automatically changes expired published items to draft and excludes them from responses.
 
 ## Why It's Useful
 
@@ -18,37 +18,21 @@ Managing time-sensitive content like blog posts, news articles, promotional camp
 
 2. **Install and build Display End Date Interface:**
    ```bash
-   cd interfaces
+   cd extensions/interfaces/display-end-date
    npm install
    npm run build
    ```
 
 3. **Install and build Filter Expired Posts Hook:**
    ```bash
-   cd ../filter-expired-posts
+   cd ../hooks/filter-expired-posts
    npm install
    npm run build
    ```
 
-4. **Copy extensions to Directus:**
-   
-   Copy the built extensions to your Directus project:
-   ```
-   your-directus-project/
-     extensions/
-       interfaces/
-         display-end-date/
-           dist/
-             index.js
-           package.json
-       hooks/
-         filter-expired-posts/
-           dist/
-             index.js
-           package.json
-   ```
+4. **(Tùy chọn) bundle auto-load:** Đặt file `extensions/package.json` (đã có sẵn) vào thư mục `extensions/` của Directus để Directus nhận cả interface + hook theo dạng bundle.
 
-5. **Restart your Directus instance**
+5. **Restart Directus** (để extensions được load).
 
 ### Usage
 
@@ -60,10 +44,10 @@ Managing time-sensitive content like blog posts, news articles, promotional camp
 4. Click **Create Field**
 5. Configure the field:
    - **Field Name:** `display_end_date`
-   - **Field Type:** `DateTime` or `Timestamp`
+   - **Field Type:** `Date` (khuyên dùng) hoặc `DateTime`/`Timestamp` nếu cần giờ
    - **Interface:** Select **"Display End Date"**
    - **Options:** 
-     - Include Time: ✅ (enabled by default)
+     - Include Time: tùy chọn (mặc định OFF, chọn để bật giờ/phút)
    - Save
 
 #### Step 2: Use the Interface
@@ -73,13 +57,13 @@ Managing time-sensitive content like blog posts, news articles, promotional camp
 3. If you select a date in the past, a warning will appear
 4. Leave empty if content should never expire
 
-#### Step 3: Automatic Filtering
+#### Step 3: Tự động đổi trạng thái & lọc
 
-Once both extensions are installed:
-- The hook automatically detects the `display_end_date` field
-- When querying the API, expired posts are automatically filtered out
-- No need to add filters manually to your API queries
-- Expired published items are automatically changed to draft status
+Khi hook được load:
+- Hook tự phát hiện field `display_end_date`
+- Khi có request đọc items (list/detail), các item `published` có `display_end_date` < hôm nay sẽ được **đổi status sang draft trong DB**
+- Payload trả về cũng sẽ không còn item hết hạn (do đã chuyển draft)
+- Bạn có thể xem log để chắc chắn hook chạy: `docker compose logs directus | Select-String -Pattern "filter-expired-posts"`
 
 ### Example API Usage
 
@@ -94,7 +78,6 @@ const posts = await directus.request(
     }
   })
 );
-// Only returns posts where display_end_date is null or in the future
 ```
 
 ## Features & Screenshots
@@ -143,13 +126,13 @@ The following screenshots demonstrate how these extensions improve content manag
 
 ### Display End Date Interface
 - **Type:** Interface Extension
-- **Location:** `interfaces/`
-- **Documentation:** [View Details](./interfaces/README.md)
+- **Location:** `extensions/interfaces/display-end-date/`
+- **Documentation:** [View Details](./extensions/interfaces/README.md)
 
 ### Filter Expired Posts Hook
 - **Type:** API Hook Extension
-- **Location:** `filter-expired-posts/`
-- **Documentation:** [View Details](./filter-expired-posts/README.md)
+- **Location:** `extensions/hooks/filter-expired-posts/`
+- **Documentation:** [View Details](./extensions/hooks/filter-expired-posts/README.md)
 
 ## License
 
