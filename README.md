@@ -30,9 +30,9 @@ Managing time-sensitive content like blog posts, news articles, promotional camp
    npm run build
    ```
 
-4. **(Tùy chọn) bundle auto-load:** Đặt file `extensions/package.json` (đã có sẵn) vào thư mục `extensions/` của Directus để Directus nhận cả interface + hook theo dạng bundle.
+4. **(Optional) bundle auto-load:** Place the provided extensions/package.json file into the extensions/ directory of your Directus project so Directus loads both the interface and the hook as a bundle.
 
-5. **Restart Directus** (để extensions được load).
+5. **Restart Directus** (to ensure the extensions are loaded).
 
 ### Usage
 
@@ -43,12 +43,12 @@ Managing time-sensitive content like blog posts, news articles, promotional camp
 3. Select your collection (e.g., `posts`)
 4. Click **Create Field**
 5. Configure the field:
-   - **Field Name:** `display_end_date`
-   - **Field Type:** `Date` (khuyên dùng) hoặc `DateTime`/`Timestamp` nếu cần giờ
-   - **Interface:** Select **"Display End Date"**
-   - **Options:** 
-     - Include Time: tùy chọn (mặc định OFF, chọn để bật giờ/phút)
-   - Save
+  Field Name: display_end_date
+  Field Type: Date (recommended), or DateTime / Timestamp if you also need time
+  Interface: Select "Display End Date"
+  Options:
+  Include Time: optional (default OFF, enable if you need hours/minutes)
+  Save
 
 #### Step 2: Use the Interface
 
@@ -57,13 +57,13 @@ Managing time-sensitive content like blog posts, news articles, promotional camp
 3. If you select a date in the past, a warning will appear
 4. Leave empty if content should never expire
 
-#### Step 3: Tự động đổi trạng thái & lọc
-
-Khi hook được load:
-- Hook tự phát hiện field `display_end_date`
-- Khi có request đọc items (list/detail), các item `published` có `display_end_date` < hôm nay sẽ được **đổi status sang draft trong DB**
-- Payload trả về cũng sẽ không còn item hết hạn (do đã chuyển draft)
-- Bạn có thể xem log để chắc chắn hook chạy: `docker compose logs directus | Select-String -Pattern "filter-expired-posts"`
+Step 3: Automatic status change & filtering
+When the hook is loaded:
+It automatically detects the display_end_date field
+On any items read request (list/detail), published items with display_end_date earlier than today will have their status changed to draft in the database
+The response payload will no longer contain expired items (because they’ve been moved to draft)
+You can verify the hook is running via logs:
+docker compose logs directus | Select-String -Pattern "filter-expired-posts"
 
 ### Example API Usage
 
