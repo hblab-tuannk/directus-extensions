@@ -25,9 +25,6 @@ export default defineHook(({ action }, { getSchema, services, logger }) => {
 				return;
 			}
 
-			logger?.info(`[filter-expired-posts] Processing collection "${collection}" with field "${displayEndDateField}"`);
-			console.log(`[filter-expired-posts] Processing collection "${collection}" with field "${displayEndDateField}"`);
-
 			const itemsService = new services.ItemsService(collection, {
 				schema: fullSchema,
 				accountability: { admin: true }
@@ -67,8 +64,6 @@ export default defineHook(({ action }, { getSchema, services, logger }) => {
 				}
 			}
 
-			logger?.info(`[filter-expired-posts] Checking ${itemsToCheck.length} items for expiration (comparing dates only)`);
-			console.log(`[filter-expired-posts] Checking ${itemsToCheck.length} items for expiration (comparing dates only)`);
 
 			for (const item of itemsToCheck) {
 				if (!item || !item.id) continue;
@@ -96,17 +91,12 @@ export default defineHook(({ action }, { getSchema, services, logger }) => {
 					if (endDateOnly < today) {
 						const endDateStr = endDateOnly.toISOString().split('T')[0];
 						const todayStr = today.toISOString().split('T')[0];
-						logger?.info(`[filter-expired-posts] Item ${item.id} expired (${endDateStr} < ${todayStr}), updating status to draft`);
-						console.log(`[filter-expired-posts] Item ${item.id} expired (${endDateStr} < ${todayStr}), updating status to draft`);
 						
 						try {
 							await itemsService.updateOne(item.id, {
 								status: 'draft'
 							});
-							logger?.info(`[filter-expired-posts] Successfully updated item ${item.id} to draft`);
-							console.log(`[filter-expired-posts] Successfully updated item ${item.id} to draft`);
 						} catch (updateError) {
-							logger?.error(`[filter-expired-posts] Error updating item ${item.id}: ${updateError}`);
 							console.error(`[filter-expired-posts] Error updating item ${item.id}: ${updateError}`);
 						}
 					} else {
@@ -115,13 +105,10 @@ export default defineHook(({ action }, { getSchema, services, logger }) => {
 						logger?.debug(`[filter-expired-posts] Item ${item.id} not expired yet (${endDateStr} >= ${todayStr})`);
 					}
 				} catch (error) {
-					logger?.warn(`[filter-expired-posts] Error parsing end date for item ${item.id}: ${error}`);
-					console.warn(`[filter-expired-posts] Error parsing end date for item ${item.id}: ${error}`);
 				}
 			}
 		} catch (error) {
 			logger?.error(`[filter-expired-posts] Error in action hook: ${error}`);
-			console.error(`[filter-expired-posts] Error in action hook: ${error}`);
 		}
 	});
 });
