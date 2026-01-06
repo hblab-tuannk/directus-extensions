@@ -17,4 +17,13 @@ services:
       KEY: "your-secret-key-change-this-in-production"
       SECRET: "your-secret-change-this-in-production"
       CORS_ENABLED: "true"
+      # Filter Expired Posts Hook Configuration
+      FILTER_EXPIRED_DISPLAY_FIELD: "display_end_date"
+      FILTER_EXPIRED_STATUS_FIELD: "status"
+      FILTER_EXPIRED_STATUS_PUBLISHED: "published"
+      FILTER_EXPIRED_STATUS_DRAFT: "draft"
+      FILTER_EXPIRED_COLLECTIONS: ""
+      FILTER_EXPIRED_AUTOCREATE_FIELD: "true"
+      FILTER_EXPIRED_FIELD_TYPE: "date"
+      FILTER_EXPIRED_INTERFACE: "display-end-date"
     restart: unless-stopped
